@@ -1,1 +1,8 @@
-/home/wdonofrio/.codex/config.toml
+[projects."/home/wdonofrio"]
+trust_level = "trusted"
+
+[features]
+unified_exec = true
+shell_snapshot = true
+collab = true
+steer = true

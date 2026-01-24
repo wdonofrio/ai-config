@@ -7,3 +7,5 @@ shell_snapshots/
 tmp/
 models_cache.json
 version.json
+__pycache__/
+*.pyc
