@@ -8,5 +8,6 @@ tmp/
 models_cache.json
 version.json
 rules/default.rules
+skills/.system/
 __pycache__/
 *.pyc
