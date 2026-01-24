@@ -251,6 +251,7 @@ description: One or two sentences describing the page.
 Before committing documentation changes:
 
 - [ ] Frontmatter has `title` and `description`
+- [ ] Commit message follows Conventional Commits (e.g. `docs: update api reference`)
 - [ ] Code blocks have `filename` attribute
 - [ ] TypeScript examples use `switcher` with JS variant
 - [ ] Props tables are properly formatted
