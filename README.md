@@ -1,36 +1,33 @@
-# Codex Config Repo
+# Codex Config (Shareable)
 
-This repo is a versioned home for Codex CLI configuration. It is meant to be
-symlinked into your live Codex config directory so edits here immediately affect
-Codex behavior.
+This repo is a shareable, version-controlled Codex CLI configuration. Clone it,
+customize it, and symlink it into your local Codex config directory so Codex
+uses these rules and skills directly.
 
-## How It Works
+## Recommended Setup (Symlink)
 
-Tracked items in this repo are symlinks into `$CODEX_HOME` (defaults to
-`~/.codex`). That means:
-- Editing files in this repo changes live Codex config.
-- Updating live Codex config updates this repo.
-
-Currently linked:
-- `config.toml` -> `$CODEX_HOME/config.toml`
-- `rules/` -> `$CODEX_HOME/rules`
-- `skills/` -> `$CODEX_HOME/skills`
-
-## Bootstrap / Verify Symlinks
-
-Use the helper script to create or verify the symlinks:
-
+1. Clone this repo:
 ```bash
-./scripts/link-codex-config.sh
+git clone git@github.com:wdonofrio/codex.git ~/projects/codex
 ```
 
-If you keep Codex config elsewhere, set `CODEX_HOME`:
-
+2. Point Codex to this repo via symlinks:
 ```bash
-CODEX_HOME=/path/to/codex ./scripts/link-codex-config.sh
+ln -s ~/projects/codex/config.toml ~/.codex/config.toml
+ln -s ~/projects/codex/rules ~/.codex/rules
+ln -s ~/projects/codex/skills ~/.codex/skills
 ```
 
-## Notes
+If your Codex config lives elsewhere, replace `~/.codex` or set `CODEX_HOME`.
 
-- `AGENTS.md` at repo root configures Codex CLI for this repo.
-- Local-only files (auth, sessions, logs) are intentionally ignored.
+## What's Inside
+
+- `config.toml`: Codex config
+- `rules/`: lightweight, language-agnostic rule checklists
+- `skills/`: reusable workflow skills (planning, review, TDD, doc updates)
+- `AGENTS.md`: repo-level Codex instructions for this project
+
+## Local-Only Files
+
+Local state (auth, sessions, logs) should not be committed; they stay in
+`~/.codex` and are ignored here.

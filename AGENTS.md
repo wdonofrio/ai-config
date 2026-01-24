@@ -14,6 +14,7 @@ Core Principles
 - Quality: prefer simple, maintainable changes; validate assumptions.
 - Testing: suggest or run relevant tests when feasible.
 - Checklists: use relevant guidance in `/rules/*.md` (security, testing, git, coding style).
+- Secrets: never add or commit credentials, tokens, or sensitive data in this public repo.
 
 PLANNING
 - Restate goals, constraints, and assumptions.
