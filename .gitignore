@@ -1,0 +1,9 @@
+# Codex local-only data
+auth.json
+history.jsonl
+log/
+sessions/
+shell_snapshots/
+tmp/
+models_cache.json
+version.json
