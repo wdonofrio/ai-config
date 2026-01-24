@@ -6,3 +6,6 @@ unified_exec = true
 shell_snapshot = true
 collab = true
 steer = true
+
+[mcp_servers.prompts-chat]
+url = "https://prompts.chat/api/mcp"

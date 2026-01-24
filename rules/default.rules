@@ -3,3 +3,5 @@ prefix_rule(pattern=["curl", "-L", "https://raw.githubusercontent.com/botingw/ru
 prefix_rule(pattern=["git", "clone", "--depth", "1", "https://github.com/botingw/rulebook-ai", "/tmp/rulebook-ai"], decision="allow")
 prefix_rule(pattern=["git", "clone", "--depth", "1", "https://github.com/affaan-m/everything-claude-code", "/tmp/everything-claude-code"], decision="allow")
 prefix_rule(pattern=["git", "-C", "/home/wdonofrio/projects/codex", "push", "-u", "origin", "master"], decision="allow")
+prefix_rule(pattern=["git", "-C", "/home/wdonofrio/projects/codex", "push"], decision="allow")
+prefix_rule(pattern=["git", "clone", "--depth", "1", "https://github.com/cosmix/loom.git", "/tmp/skillsmp-loom"], decision="allow")

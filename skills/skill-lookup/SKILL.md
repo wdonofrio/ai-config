@@ -1,6 +1,6 @@
 ---
 name: skill-lookup
-description: Activates when the user asks about Agent Skills, wants to find reusable AI capabilities, needs to install skills, or mentions skills for Claude. Use for discovering, retrieving, and installing skills.
+description: Activates when the user asks about Agent Skills, wants to find reusable AI capabilities, needs to install skills, or mentions skills for Claude. Use prompts.chat MCP first and fall back to skillsmp.com API if MCP is unavailable or results are empty.
 ---
 
 When the user needs Agent Skills, wants to extend Claude's capabilities, or is looking for reusable AI agent components, use the prompts.chat MCP server.
@@ -67,6 +67,18 @@ Skills contain:
 - **Reference docs** - Additional documentation files
 - **Scripts** - Helper scripts (Python, shell, etc.)
 - **Config files** - JSON, YAML configurations
+
+## Skillsmp Fallback (HTTP API)
+
+Use the skillsmp.com API when prompts.chat MCP tools are unavailable or return no relevant skills.
+
+- **Token**: Read from `SKILLSMP_API_TOKEN`. Never hardcode or echo the token.
+- **Base URL**: Read from `SKILLSMP_API_BASE` (e.g. `https://skillsmp.com`).
+- **Keyword Search**: `GET /api/v1/skills/search?q=<query>&page=<n>&limit=<n>&sortBy=stars|recent`
+- **AI Search**: `GET /api/v1/skills/ai-search?q=<query>`
+- **Auth**: `Authorization: Bearer $SKILLSMP_API_TOKEN`
+- **Parse**: Extract title, description, author, tags, files, link, votes if present.
+- **Safety**: Do not log headers that include the token.
 
 ## Guidelines
 
