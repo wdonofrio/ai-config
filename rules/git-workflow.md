@@ -3,6 +3,7 @@
 Before pushing:
 - Review full diff against base branch.
 - Summarize changes and list tests run or omitted.
+- Run tests you write or change.
 - Use Conventional Commits format: `type(scope)!: subject`.
 - Common types: `feat`, `fix`, `docs`, `chore`, `refactor`, `test`, `ci`, `build`, `perf`, `revert`.
 

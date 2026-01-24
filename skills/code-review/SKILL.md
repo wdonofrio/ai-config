@@ -26,3 +26,4 @@ Focus on defects, regressions, and risks first. Be specific and evidence-based.
 ## Reminders
 
 - Use `/rules/security.md` and `/rules/testing.md` for checklists.
+- Flag missing test runs when tests are added or changed.

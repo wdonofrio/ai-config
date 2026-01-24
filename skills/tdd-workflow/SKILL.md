@@ -20,5 +20,5 @@ Use when implementing new behavior or fixing bugs with tests.
 ## Reminders
 
 - Keep tests deterministic and focused on behavior.
-- If tests are not run, explain why and suggest verification.
+- Run tests you write or change. If not run, explain why and suggest verification.
 - Use `/rules/testing.md` for checklist items.

@@ -21,4 +21,5 @@ Use this for design and planning requests. Keep plans concise, ordered, and alig
 ## Reminders
 
 - Stay language-agnostic unless the repo dictates otherwise.
+- In the test plan, include running any tests you write or change.
 - Use `/rules/*.md` checklists for security, testing, and git hygiene.
