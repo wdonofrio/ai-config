@@ -1,3 +1,8 @@
+# User-specific config files (contain local paths)
+codex/config.toml
+codex/rules/default.rules
+claude/settings.json
+
 # Codex local-only data
 auth.json
 history.jsonl
@@ -7,7 +12,26 @@ shell_snapshots/
 tmp/
 models_cache.json
 version.json
-rules/default.rules
-skills/.system/
+
+# Claude local-only data
+.credentials.json
+cache/
+debug/
+downloads/
+ide/
+plans/
+plugins/
+projects/
+session-env/
+todos/
+statsig/
+
+# Codex system skills (auto-generated)
+codex/skills/.system/
+
+# Python
 __pycache__/
 *.pyc
+
+# OS
+.DS_Store

@@ -1,0 +1,9 @@
+# Codex permission rules
+# Copy this to default.rules and customize for your environment
+#
+# Format: prefix_rule(pattern=["command", "args", ...], decision="allow")
+#
+# Examples:
+# prefix_rule(pattern=["git", "push"], decision="allow")
+# prefix_rule(pattern=["npm", "install"], decision="allow")
+# prefix_rule(pattern=["uv", "sync", "--dev"], decision="allow")

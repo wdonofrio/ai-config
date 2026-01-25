@@ -1,33 +1,127 @@
-# Codex Config (Shareable)
+# AI Config (Shareable)
 
-This repo is a shareable, version-controlled Codex CLI configuration. Clone it,
-customize it, and symlink it into your local Codex config directory so Codex
-uses these rules and skills directly.
+Shareable, version-controlled configuration for AI coding assistants. Currently supports:
+- **Codex CLI** (`~/.codex`)
+- **Claude Code** (`~/.claude`)
 
-## Recommended Setup (Symlink)
+Clone it, customize it, and symlink it so both tools share skills and guidelines.
 
-1. Clone this repo:
-```bash
-git clone git@github.com:wdonofrio/codex.git ~/projects/codex
+## Directory Structure
+
+```
+ai-config/
+├── codex/                    # Codex CLI specific
+│   ├── config.example.toml   # Example config (copy to config.toml)
+│   ├── rules/                # Permission rules
+│   └── skills/               # Codex-only skills (.system)
+├── claude/                   # Claude Code specific
+│   └── settings.example.json # Example settings (copy to settings.json)
+└── shared/                   # Shared between both tools
+    ├── skills/               # Reusable workflow skills
+    └── guidelines/           # Coding standards, security, etc.
 ```
 
-2. Point Codex to this repo via symlinks:
+## Setup
+
+### 1. Clone this repo
+
 ```bash
-ln -s ~/projects/codex/config.toml ~/.codex/config.toml
-ln -s ~/projects/codex/rules ~/.codex/rules
-ln -s ~/projects/codex/skills ~/.codex/skills
+git clone <your-repo-url> ~/projects/ai-config
 ```
 
-If your Codex config lives elsewhere, replace `~/.codex` or set `CODEX_HOME`.
+### 2. Create local config files
 
-## What's Inside
+```bash
+# Codex
+cp ~/projects/ai-config/codex/config.example.toml ~/projects/ai-config/codex/config.toml
+cp ~/projects/ai-config/codex/rules/default.example.rules ~/projects/ai-config/codex/rules/default.rules
+# Edit these files with your local paths and preferences
 
-- `config.toml`: Codex config
-- `rules/`: lightweight, language-agnostic rule checklists
-- `skills/`: reusable workflow skills (planning, review, TDD, doc updates)
-- `AGENTS.md`: repo-level Codex instructions for this project
+# Claude (optional - Claude works without settings.json)
+cp ~/projects/ai-config/claude/settings.example.json ~/projects/ai-config/claude/settings.json
+```
+
+### 3. Symlink to config directories
+
+#### Codex CLI
+
+```bash
+# Remove existing files/symlinks if present
+rm -f ~/.codex/config.toml ~/.codex/rules ~/.codex/skills 2>/dev/null
+
+# Create symlinks
+ln -s ~/projects/ai-config/codex/config.toml ~/.codex/config.toml
+ln -s ~/projects/ai-config/codex/rules ~/.codex/rules
+ln -s ~/projects/ai-config/shared/skills ~/.codex/skills
+```
+
+#### Claude Code
+
+```bash
+# Remove existing if present
+rm -rf ~/.claude/skills 2>/dev/null
+
+# Create symlinks
+ln -s ~/projects/ai-config/shared/skills ~/.claude/skills
+# Optional: ln -s ~/projects/ai-config/claude/settings.json ~/.claude/settings.json
+```
+
+## What's Shared
+
+### Skills (`shared/skills/`)
+Reusable workflow skills with compatible format for both Codex and Claude:
+- `code-review/` - Language-agnostic code review workflow
+- `planning-workflow/` - Structured planning approach
+- `tdd-workflow/` - Test-driven development workflow
+- `update-docs/` - Documentation update workflow
+- `skill-lookup/` - Find and use available skills
+
+### Guidelines (`shared/guidelines/`)
+Markdown checklists and standards:
+- `coding-style.md` - Code style guidelines
+- `security.md` - Security checklist
+- `testing.md` - Testing standards
+- `git-workflow.md` - Git workflow conventions
 
 ## Local-Only Files
 
-Local state (auth, sessions, logs) should not be committed; they stay in
-`~/.codex` and are ignored here.
+These files contain user-specific paths and are gitignored:
+- `codex/config.toml` - Codex configuration with local paths
+- `codex/rules/default.rules` - Permission rules with local paths
+- `claude/settings.json` - Claude settings
+
+Copy from the `.example` versions and customize locally.
+
+### Managing Sensitive Files with Chezmoi
+
+For user-specific config files that contain paths or sensitive data, use [chezmoi](https://www.chezmoi.io/) to manage them in a **private** repository:
+
+```bash
+# Add your local config files to chezmoi (stored in private dotfiles repo)
+chezmoi add ~/projects/ai-config/codex/config.toml
+chezmoi add ~/projects/ai-config/codex/rules/default.rules
+chezmoi add ~/projects/ai-config/claude/settings.json
+
+# Use templates for machine-specific values
+chezmoi edit ~/projects/ai-config/codex/config.toml
+# Then use {{ .chezmoi.homeDir }} instead of hardcoded paths
+```
+
+This keeps sensitive/personal configuration version-controlled privately while sharing the public skills and guidelines through this repo.
+
+## Adding New Skills
+
+Skills use a compatible markdown format:
+
+```markdown
+---
+name: my-skill
+description: What this skill does
+---
+
+# My Skill
+
+Instructions here...
+```
+
+Place in `shared/skills/my-skill/SKILL.md` to make available in both tools.

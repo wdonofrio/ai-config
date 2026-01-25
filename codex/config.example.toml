@@ -1,0 +1,15 @@
+# Codex CLI Configuration
+# Copy this to config.toml and customize for your environment
+
+[projects."$HOME"]
+trust_level = "trusted"
+
+[features]
+unified_exec = true
+shell_snapshot = true
+collab = true
+steer = true
+
+# Example MCP server configuration
+# [mcp_servers.example]
+# url = "https://example.com/api/mcp"

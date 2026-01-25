@@ -1,4 +1,4 @@
-Codex Working Rules (Language-Agnostic)
+AI Assistant Working Rules (Language-Agnostic)
 
 Purpose
 - Provide consistent, minimal guidance for planning, implementation, and debugging across any language or stack.
@@ -13,7 +13,7 @@ Core Principles
 - Safety: avoid destructive commands unless explicitly approved.
 - Quality: prefer simple, maintainable changes; validate assumptions.
 - Testing: suggest or run relevant tests when feasible.
-- Checklists: use relevant guidance in `/rules/*.md` (security, testing, git, coding style).
+- Checklists: use relevant guidance in `shared/guidelines/` (security, testing, git, coding style).
 - Secrets: never add or commit credentials, tokens, or sensitive data in this public repo.
 
 PLANNING
