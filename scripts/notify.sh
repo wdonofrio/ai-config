@@ -1,6 +1,6 @@
 #!/bin/bash
 # Cross-platform notification script for Claude Code hooks
-# Supports: macOS, Windows WSL, VS Code terminals
+# Supports: macOS, Windows WSL, VS Code terminals, Linux
 
 TITLE="${1:-Claude Code}"
 MESSAGE="${2:-Task completed}"
@@ -50,20 +50,24 @@ notify_wsl() {
     fi
 
     if [[ -n "$ps_path" ]]; then
-        # Use BurntToast if available, otherwise use basic Windows toast
-        "$ps_path" -NoProfile -Command "
-            \$null = [Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType = WindowsRuntime]
-            \$template = [Windows.UI.Notifications.ToastTemplateType]::ToastText02
-            \$xml = [Windows.UI.Notifications.ToastNotificationManager]::GetTemplateContent(\$template)
-            \$text = \$xml.GetElementsByTagName('text')
-            \$text[0].AppendChild(\$xml.CreateTextNode('$TITLE')) | Out-Null
-            \$text[1].AppendChild(\$xml.CreateTextNode('$MESSAGE')) | Out-Null
-            \$toast = [Windows.UI.Notifications.ToastNotification]::new(\$xml)
-            \$notifier = [Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier('Claude Code')
-            \$notifier.Show(\$toast)
+        # Escape single quotes in title and message for PowerShell
+        local title_escaped="${TITLE//\'/\'\'}"
+        local message_escaped="${MESSAGE//\'/\'\'}"
+
+        # Use a simpler, more reliable notification method
+        "$ps_path" -NoProfile -ExecutionPolicy Bypass -Command "
+            Add-Type -AssemblyName System.Windows.Forms
+            \$notification = New-Object System.Windows.Forms.NotifyIcon
+            \$notification.Icon = [System.Drawing.SystemIcons]::Information
+            \$notification.BalloonTipTitle = '$title_escaped'
+            \$notification.BalloonTipText = '$message_escaped'
+            \$notification.Visible = \$true
+            \$notification.ShowBalloonTip(5000)
+            Start-Sleep -Seconds 1
+            \$notification.Dispose()
         " 2>/dev/null
 
-        # Fallback: also play a sound via PowerShell
+        # If that fails, try the beep fallback
         if [[ $? -ne 0 ]]; then
             "$ps_path" -NoProfile -Command "[console]::beep(800,200)" 2>/dev/null
         fi
