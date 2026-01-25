@@ -9,21 +9,95 @@ metadata:
 
 Focus on defects, regressions, and risks first. Be specific and evidence-based.
 
-## Steps
+## Review Priorities
 
-1. Identify behavioral changes and critical paths.
-2. Surface bugs, edge cases, and security risks by severity.
-3. Check tests: coverage of new behavior, missing cases, flaky risks.
-4. Note performance or reliability concerns only if meaningful.
-5. Ask targeted questions for unclear intent or requirements.
+Review in this order of importance:
 
-## Output Expectations
+1. **Correctness**: Does it do what it's supposed to?
+2. **Security**: Are there vulnerabilities?
+3. **Regressions**: Could this break existing behavior?
+4. **Tests**: Is the change adequately tested?
+5. **Maintainability**: Will this be easy to understand and modify?
+6. **Performance**: Only if there are clear concerns.
 
-- Cite file paths and line references when possible.
-- Separate findings from questions.
-- Suggest follow-up tests if gaps exist.
+## Review Process
+
+### Step 1: Understand the Context
+
+- Read the PR description and linked issues
+- Understand the intent before reading code
+- Ask clarifying questions if the purpose is unclear
+
+### Step 2: Review for Correctness
+
+- Trace the logic for the main use cases
+- Identify edge cases: null, empty, max values, concurrent access
+- Check error handling paths
+- Verify data validation and sanitization
+
+### Step 3: Review for Security
+
+Check against `shared/guidelines/security.md`:
+- Input validation present?
+- Injection vulnerabilities (SQL, command, path)?
+- Authentication/authorization correct?
+- Sensitive data handled properly?
+
+### Step 4: Review for Regressions
+
+- Are existing tests still passing?
+- Could this change affect unrelated functionality?
+- Are there implicit dependencies being broken?
+
+### Step 5: Review Tests
+
+Check against `shared/guidelines/testing.md`:
+- Is the new behavior tested?
+- Are edge cases covered?
+- Are the tests meaningful (not just coverage padding)?
+- Can you think of test cases that are missing?
+
+### Step 6: Review Maintainability
+
+Check against `shared/guidelines/coding-style.md`:
+- Is the code readable and self-documenting?
+- Are there complex sections that need comments?
+- Is there duplication that should be extracted?
+- Does it follow project conventions?
+
+## Output Format
+
+Structure your review as:
+
+### Critical Issues (Must Fix)
+- Security vulnerabilities
+- Logic errors
+- Data loss risks
+
+### Suggestions (Should Consider)
+- Better approaches
+- Missing edge cases
+- Test improvements
+
+### Questions
+- Clarifications needed
+- Design decisions to discuss
+
+### Positive Notes (Optional)
+- Well-designed solutions
+- Good test coverage
+- Clean implementations
+
+## Review Etiquette
+
+- **Be specific**: Point to exact lines, explain why
+- **Suggest solutions**: Don't just point out problems
+- **Ask, don't demand**: "What do you think about..." vs "You must..."
+- **Separate opinions from requirements**: Style preferences vs bugs
+- **Acknowledge good work**: Positive feedback helps
 
 ## Reminders
 
-- Use `shared/guidelines/security.md` and `shared/guidelines/testing.md` for checklists.
-- Flag missing test runs when tests are added or changed.
+- Use `shared/guidelines/security.md` for security checklist
+- Use `shared/guidelines/testing.md` for test coverage expectations
+- Flag if tests weren't run and suggest how to run them

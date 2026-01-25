@@ -70,18 +70,23 @@ ln -s ~/projects/ai-config/shared/skills ~/.claude/skills
 
 ### Skills (`shared/skills/`)
 Reusable workflow skills with compatible format for both Codex and Claude:
-- `code-review/` - Language-agnostic code review workflow
-- `planning-workflow/` - Structured planning approach
-- `tdd-workflow/` - Test-driven development workflow
-- `update-docs/` - Documentation update workflow
-- `skill-lookup/` - Find and use available skills
+- `code-review/` - Structured code review with priorities and checklists
+- `commit/` - Conventional commits workflow
+- `debugging/` - Systematic debugging process
+- `planning-workflow/` - Implementation planning with SDLC phases
+- `refactoring/` - Safe refactoring with patterns and smells
+- `skill-lookup/` - Find and install skills from prompts.chat
+- `tdd-workflow/` - Test-driven development cycle
+- `update-docs/` - Documentation update workflow (Next.js focused)
 
 ### Guidelines (`shared/guidelines/`)
-Markdown checklists and standards:
-- `coding-style.md` - Code style guidelines
-- `security.md` - Security checklist
-- `testing.md` - Testing standards
-- `git-workflow.md` - Git workflow conventions
+Language-agnostic standards and checklists:
+- `coding-style.md` - Readability, data flow, organization
+- `error-handling.md` - Error patterns and best practices
+- `git-workflow.md` - [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/), branching, PRs
+- `performance.md` - When and how to optimize
+- `security.md` - OWASP-style security checklist
+- `testing.md` - Test pyramid, quality, coverage
 
 ## Local-Only Files
 
@@ -108,6 +113,40 @@ chezmoi edit ~/projects/ai-config/codex/config.toml
 ```
 
 This keeps sensitive/personal configuration version-controlled privately while sharing the public skills and guidelines through this repo.
+
+## Notification Hooks
+
+The `scripts/notify.sh` script provides cross-platform notifications for Claude Code hooks:
+
+**Supported platforms:**
+- **macOS**: Uses `terminal-notifier` (preferred) or `osascript`
+- **Windows/WSL**: Uses PowerShell toast notifications
+- **VS Code terminals**: Uses terminal bell + title update
+- **Linux**: Uses `notify-send`
+
+**Setup:**
+1. Copy the example settings to create your local config:
+   ```bash
+   cp ~/projects/ai-config/claude/settings.example.json ~/projects/ai-config/claude/settings.json
+   ```
+
+2. Symlink to Claude's config directory:
+   ```bash
+   ln -s ~/projects/ai-config/claude/settings.json ~/.claude/settings.json
+   ```
+
+**Hook events configured:**
+- `Stop`: Notifies when Claude finishes a task
+- `Notification` (idle_prompt): Notifies when Claude is waiting for input
+
+**macOS setup:**
+```bash
+# Install terminal-notifier for better notifications
+brew install terminal-notifier
+```
+
+**Customizing notifications:**
+Edit `claude/settings.json` to modify hook events or notification messages.
 
 ## Adding New Skills
 

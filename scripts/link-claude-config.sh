@@ -1,21 +1,21 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Link ai-config to Codex CLI config directory
-# Usage: ./scripts/link-codex-config.sh
+# Link ai-config to Claude Code config directory
+# Usage: ./scripts/link-claude-config.sh
 
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-codex_home="${CODEX_HOME:-$HOME/.codex}"
+claude_home="${CLAUDE_HOME:-$HOME/.claude}"
 
-if [[ ! -d "$codex_home" ]]; then
-  echo "Creating $codex_home"
-  mkdir -p "$codex_home"
+if [[ ! -d "$claude_home" ]]; then
+  echo "Creating $claude_home"
+  mkdir -p "$claude_home"
 fi
 
 link_one() {
   local name="$1"
   local source="$2"
-  local target="$codex_home/$name"
+  local target="$claude_home/$name"
 
   if [[ -L "$target" ]]; then
     local existing
@@ -27,18 +27,15 @@ link_one() {
     echo "updating: $name -> $source (was $existing)"
     rm "$target"
   elif [[ -e "$target" ]]; then
-    echo "error: $target exists and is not a symlink" >&2
-    exit 1
+    echo "warning: $target exists and is not a symlink, skipping" >&2
+    return 0
   fi
 
   ln -s "$source" "$target"
   echo "linked: $name -> $source"
 }
 
-link_one "config.toml" "$repo_root/codex/config.toml"
-link_one "rules" "$repo_root/codex/rules"
 link_one "skills" "$repo_root/shared/skills"
 
 echo ""
-echo "Done. Make sure you have created codex/config.toml and codex/rules/default.rules"
-echo "from the .example files if you haven't already."
+echo "Done. Shared skills are now available to Claude Code."
