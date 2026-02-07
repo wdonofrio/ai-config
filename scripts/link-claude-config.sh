@@ -37,5 +37,13 @@ link_one() {
 
 link_one "skills" "$repo_root/shared/skills"
 
+# Link settings if local settings.json exists
+if [[ -f "$repo_root/claude/settings.json" ]]; then
+  link_one "settings.json" "$repo_root/claude/settings.json"
+fi
+
 echo ""
 echo "Done. Shared skills are now available to Claude Code."
+if [[ ! -f "$repo_root/claude/settings.json" ]]; then
+  echo "Tip: Copy claude/settings.example.json to claude/settings.json to also link settings."
+fi

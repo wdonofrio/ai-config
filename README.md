@@ -77,7 +77,7 @@ Reusable workflow skills with compatible format for both Codex and Claude:
 - `refactoring/` - Safe refactoring with patterns and smells
 - `skill-lookup/` - Find and install skills from prompts.chat
 - `tdd-workflow/` - Test-driven development cycle
-- `update-docs/` - Documentation update workflow (Next.js focused)
+- `update-docs/` - Documentation update workflow (framework-agnostic, with Next.js examples)
 
 ### Guidelines (`shared/guidelines/`)
 Language-agnostic standards and checklists:
@@ -87,6 +87,7 @@ Language-agnostic standards and checklists:
 - `performance.md` - When and how to optimize
 - `security.md` - OWASP-style security checklist
 - `testing.md` - Test pyramid, quality, coverage
+- `api-design.md` - API contracts, versioning, error responses
 
 ## Local-Only Files
 

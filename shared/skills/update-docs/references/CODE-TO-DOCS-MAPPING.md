@@ -1,4 +1,6 @@
-# Code to Documentation Mapping
+# Code to Documentation Mapping (Next.js Example)
+
+> **Note**: This is a project-specific example for Next.js. Replace with your own project's code-to-docs mapping.
 
 Maps Next.js source code directories to their corresponding documentation files.
 

@@ -1,18 +1,20 @@
 ---
 name: update-docs
-description: This skill should be used when the user asks to "update documentation for my changes", "check docs for this PR", "what docs need updating", "sync docs with code", "scaffold docs for this feature", "document this feature", "review docs completeness", "add docs for this change", "what documentation is affected", "docs impact", or mentions "docs/", "docs/01-app", "docs/02-pages", "MDX", "documentation update", "API reference", ".mdx files". Provides guided workflow for updating Next.js documentation based on code changes.
+description: Use when the user asks to "update documentation for my changes", "check docs for this PR", "what docs need updating", "sync docs with code", "scaffold docs for this feature", "document this feature", "review docs completeness", "add docs for this change", "what documentation is affected", or "docs impact". Provides a guided workflow for updating documentation based on code changes.
+metadata:
+  short-description: Documentation update workflow
 ---
 
-# Next.js Documentation Updater
+# Documentation Update Workflow
 
-Guides you through updating Next.js documentation based on code changes on the active branch. Designed for maintainers reviewing PRs for documentation completeness.
+Guides you through updating documentation based on code changes on the active branch. Designed for reviewing PRs for documentation completeness.
 
 ## Quick Start
 
-1. **Analyze changes**: Run `git diff canary...HEAD --stat` to see what files changed
+1. **Analyze changes**: Run `git diff main...HEAD --stat` to see what files changed
 2. **Identify affected docs**: Map changed source files to documentation paths
 3. **Review each doc**: Walk through updates with user confirmation
-4. **Validate**: Run `pnpm lint` to check formatting
+4. **Validate**: Run the project's lint/build check
 5. **Commit**: Stage documentation changes
 
 ## Workflow: Analyze Code Changes
@@ -21,32 +23,39 @@ Guides you through updating Next.js documentation based on code changes on the a
 
 ```bash
 # See all changed files on this branch
-git diff canary...HEAD --stat
+git diff main...HEAD --stat
 
 # See changes in specific areas
-git diff canary...HEAD -- packages/next/src/
+git diff main...HEAD -- src/
 ```
 
 ### Step 2: Identify documentation-relevant changes
 
-Look for changes in these areas:
+Changes that typically require doc updates:
 
-| Source Path                            | Likely Doc Impact           |
-| -------------------------------------- | --------------------------- |
-| `packages/next/src/client/components/` | Component API reference     |
-| `packages/next/src/server/`            | Function API reference      |
-| `packages/next/src/shared/lib/`        | Varies by export            |
-| `packages/next/src/build/`             | Configuration or build docs |
-| `packages/next/src/lib/`               | Various features            |
+- **Public API changes**: New or modified exports, function signatures, component props
+- **Configuration changes**: New options, changed defaults, deprecated settings
+- **Behavioral changes**: Different output, changed error messages, new side effects
+- **New features**: Entirely new capabilities that users need to know about
+- **Breaking changes**: Anything that requires users to change their code
+
+Changes that typically do NOT require doc updates:
+
+- Internal refactoring with no API change
+- Test additions/fixes
+- Build/CI changes
+- Performance improvements with no API change
 
 ### Step 3: Map to documentation files
 
-Use the code-to-docs mapping in `references/CODE-TO-DOCS-MAPPING.md` to find corresponding documentation files.
+If the project has a code-to-docs mapping (see `references/` directory), use it to find corresponding documentation files.
 
-Example mappings:
+Otherwise, search for existing documentation that references the changed APIs:
 
-- `src/client/components/image.tsx` → `docs/01-app/03-api-reference/02-components/image.mdx`
-- `src/server/config-shared.ts` → `docs/01-app/03-api-reference/05-config/`
+```bash
+# Find docs mentioning a specific function or component
+grep -r "functionName" docs/
+```
 
 ## Workflow: Update Existing Documentation
 
@@ -55,17 +64,17 @@ Example mappings:
 Before making changes, read the existing doc to understand:
 
 - Current structure and sections
-- Frontmatter fields in use
-- Whether it uses `<AppOnly>` / `<PagesOnly>` for router-specific content
+- Formatting conventions in use
+- Whether content is shared across multiple pages
 
 ### Step 2: Identify what needs updating
 
 Common updates include:
 
-- **New props/options**: Add to the props table and create a section explaining usage
+- **New parameters/options/props**: Add to reference tables and explain usage
 - **Changed behavior**: Update descriptions and examples
 - **Deprecated features**: Add deprecation notices and migration guidance
-- **New examples**: Add code blocks following conventions
+- **New examples**: Add code blocks following project conventions
 
 ### Step 3: Apply updates with confirmation
 
@@ -78,22 +87,20 @@ For each change:
 
 ### Step 4: Check for shared content
 
-If the doc uses the `source` field pattern (common for Pages Router docs), the source file is the one to edit. Example:
+Some documentation systems reuse content across pages. Before editing, check if:
 
-```yaml
-# docs/02-pages/... file with shared content
----
-source: app/building-your-application/optimizing/images
----
-```
-
-Edit the App Router source, not the Pages Router file.
+- The file pulls content from another source (via includes, imports, or source fields)
+- Other files reference this file's content
+- Edits should go in the source file, not the consumer
 
 ### Step 5: Validate changes
 
+Run the project's documentation validation:
+
 ```bash
-pnpm lint          # Check formatting
-pnpm prettier-fix  # Auto-fix formatting issues
+# Common validation commands (use whatever the project uses)
+npm run lint
+npm run build
 ```
 
 ## Workflow: Scaffold New Feature Documentation
@@ -102,164 +109,58 @@ Use this when adding documentation for entirely new features.
 
 ### Step 1: Determine the doc type
 
-| Feature Type        | Doc Location                                        | Template         |
-| ------------------- | --------------------------------------------------- | ---------------- |
-| New component       | `docs/01-app/03-api-reference/02-components/`       | API Reference    |
-| New function        | `docs/01-app/03-api-reference/04-functions/`        | API Reference    |
-| New config option   | `docs/01-app/03-api-reference/05-config/`           | Config Reference |
-| New concept/guide   | `docs/01-app/02-guides/`                            | Guide            |
-| New file convention | `docs/01-app/03-api-reference/03-file-conventions/` | File Convention  |
+| Feature Type       | Typical Doc Type   |
+| ------------------ | ------------------ |
+| New component/API  | API Reference      |
+| New capability     | Guide / How-to     |
+| New config option  | Configuration Ref  |
+| Architecture topic | Concept / Overview |
 
-### Step 2: Create the file with proper naming
+### Step 2: Create the file
 
-- Use kebab-case: `my-new-feature.mdx`
-- Add numeric prefix if ordering matters: `05-my-new-feature.mdx`
+- Follow the project's naming conventions (kebab-case is common)
 - Place in the correct directory based on feature type
+- Use existing docs as a template for structure and formatting
 
-### Step 3: Use the appropriate template
+### Step 3: Write using project conventions
 
-**API Reference Template:**
+**API Reference** docs typically include:
 
-```mdx
----
-title: Feature Name
-description: Brief description of what this feature does.
----
+- Brief description of what it does
+- Function signature or props table
+- Parameter descriptions
+- Return value
+- Code examples
+- Error cases or edge cases
 
-{/* The content of this doc is shared between the app and pages router. You can use the `<PagesOnly>Content</PagesOnly>` component to add content that is specific to the Pages Router. Any shared content should not be wrapped in a component. */}
+**Guide** docs typically include:
 
-Brief introduction to the feature.
+- Introduction explaining why this is useful
+- Prerequisites
+- Step-by-step instructions with code examples
+- Next steps / related topics
 
-## Reference
+### Step 4: Cross-link related documentation
 
-### Props
-
-<div style={{ overflowX: 'auto', width: '100%' }}>
-
-| Prop                    | Example            | Type   | Status   |
-| ----------------------- | ------------------ | ------ | -------- |
-| [`propName`](#propname) | `propName="value"` | String | Required |
-
-</div>
-
-#### `propName`
-
-Description of the prop.
-
-\`\`\`tsx filename="app/example.tsx" switcher
-// TypeScript example
-\`\`\`
-
-\`\`\`jsx filename="app/example.js" switcher
-// JavaScript example
-\`\`\`
-```
-
-**Guide Template:**
-
-```mdx
----
-title: How to do X in Next.js
-nav_title: X
-description: Learn how to implement X in your Next.js application.
----
-
-Introduction explaining why this guide is useful.
-
-## Prerequisites
-
-What the reader needs to know before starting.
-
-## Step 1: First Step
-
-Explanation and code example.
-
-\`\`\`tsx filename="app/example.tsx" switcher
-// Code example
-\`\`\`
-
-## Step 2: Second Step
-
-Continue with more steps...
-
-## Next Steps
-
-Related topics to explore.
-```
-
-### Step 4: Add related links
-
-Update frontmatter with related documentation:
-
-```yaml
-related:
-  title: Next Steps
-  description: Learn more about related features.
-  links:
-    - app/api-reference/functions/related-function
-    - app/guides/related-guide
-```
-
-## Documentation Conventions
-
-See `references/DOC-CONVENTIONS.md` for complete formatting rules.
-
-### Quick Reference
-
-**Frontmatter (required):**
-
-```yaml
----
-title: Page Title (2-3 words)
-description: One or two sentences describing the page.
----
-```
-
-**Code blocks:**
-
-```
-\`\`\`tsx filename="app/page.tsx" switcher
-// TypeScript first
-\`\`\`
-
-\`\`\`jsx filename="app/page.js" switcher
-// JavaScript second
-\`\`\`
-```
-
-**Router-specific content:**
-
-```mdx
-<AppOnly>Content only for App Router docs.</AppOnly>
-
-<PagesOnly>Content only for Pages Router docs.</PagesOnly>
-```
-
-**Notes:**
-
-```mdx
-> **Good to know**: Single line note.
-
-> **Good to know**:
->
-> - Multi-line note point 1
-> - Multi-line note point 2
-```
+- Add links to related docs (API references, guides, configuration)
+- Update any index or navigation pages if needed
+- Check that existing docs link to the new page where relevant
 
 ## Validation Checklist
 
 Before committing documentation changes:
 
-- [ ] Frontmatter has `title` and `description`
-- [ ] Commit message follows Conventional Commits (e.g. `docs: update api reference`)
-- [ ] Code blocks have `filename` attribute
-- [ ] TypeScript examples use `switcher` with JS variant
-- [ ] Props tables are properly formatted
+- [ ] Content accurately reflects the code change
+- [ ] Commit message follows Conventional Commits (e.g., `docs: update API reference for X`)
+- [ ] Code examples are correct and tested
+- [ ] Formatting follows project conventions
 - [ ] Related links point to valid paths
-- [ ] `pnpm lint` passes
+- [ ] Lint/build passes
 - [ ] Changes render correctly (if preview available)
 
 ## References
 
-- `references/DOC-CONVENTIONS.md` - Complete frontmatter and formatting rules
-- `references/CODE-TO-DOCS-MAPPING.md` - Source code to documentation mapping
+If this skill is used in a project with specific doc conventions, place project-specific references in the `references/` directory:
+
+- `references/DOC-CONVENTIONS.md` - Project-specific formatting rules
+- `references/CODE-TO-DOCS-MAPPING.md` - Source code to documentation path mapping
