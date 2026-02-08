@@ -11,7 +11,7 @@ Guides you through updating documentation based on code changes on the active br
 
 ## Quick Start
 
-1. **Analyze changes**: Run `git diff main...HEAD --stat` to see what files changed
+1. **Analyze changes**: Run `git diff <base-branch>...HEAD --stat` to see what files changed
 2. **Identify affected docs**: Map changed source files to documentation paths
 3. **Review each doc**: Walk through updates with user confirmation
 4. **Validate**: Run the project's lint/build check
@@ -22,11 +22,11 @@ Guides you through updating documentation based on code changes on the active br
 ### Step 1: Get the diff
 
 ```bash
-# See all changed files on this branch
-git diff main...HEAD --stat
+# See all changed files on this branch (replace <base-branch> with main, master, develop, etc.)
+git diff <base-branch>...HEAD --stat
 
-# See changes in specific areas
-git diff main...HEAD -- src/
+# See changes in specific areas (use the relevant source directory for your project)
+git diff <base-branch>...HEAD -- <source-directory>/
 ```
 
 ### Step 2: Identify documentation-relevant changes

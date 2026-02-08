@@ -9,7 +9,7 @@
       "Bash(git show*)"
     ],
     "deny": [
-      "Bash(rm -rf /)*",
+      "Bash(rm -rf /*)",
       "Bash(git push --force*)",
       "Bash(git reset --hard*)",
       "Bash(*> /dev/sd*)",
