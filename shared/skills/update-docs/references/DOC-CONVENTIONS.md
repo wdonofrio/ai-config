@@ -1,4 +1,6 @@
-# Next.js Documentation Conventions
+# Documentation Conventions (Next.js Example)
+
+> **Note**: This is a project-specific example for Next.js. Replace with your own project's documentation conventions.
 
 Complete reference for frontmatter schema, code block formatting, and MDX component usage.
 
