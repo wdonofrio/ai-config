@@ -16,7 +16,10 @@ ai-config/
 │   └── skills/               # Codex-only skills (.system)
 ├── claude/                   # Claude Code specific
 │   └── settings.example.json # Example settings (copy to settings.json)
-└── shared/                   # Shared between both tools
+├── copilot/                  # GitHub Copilot CLI specific
+│   ├── config.example.json   # Example config (copy to config.json)
+│   └── mcp-config.example.json # Example MCP servers (copy to mcp-config.json)
+└── shared/                   # Shared between all tools
     ├── skills/               # Reusable workflow skills
     └── guidelines/           # Coding standards, security, etc.
 ```
@@ -39,6 +42,10 @@ cp ~/projects/ai-config/codex/rules/default.example.rules ~/projects/ai-config/c
 
 # Claude (optional - Claude works without settings.json)
 cp ~/projects/ai-config/claude/settings.example.json ~/projects/ai-config/claude/settings.json
+
+# Copilot CLI
+cp ~/projects/ai-config/copilot/config.example.json ~/projects/ai-config/copilot/config.json
+cp ~/projects/ai-config/copilot/mcp-config.example.json ~/projects/ai-config/copilot/mcp-config.json
 ```
 
 ### 3. Symlink to config directories
@@ -64,6 +71,17 @@ rm -rf ~/.claude/skills 2>/dev/null
 # Create symlinks
 ln -s ~/projects/ai-config/shared/skills ~/.claude/skills
 # Optional: ln -s ~/projects/ai-config/claude/settings.json ~/.claude/settings.json
+```
+
+#### GitHub Copilot CLI
+
+```bash
+# Remove existing files if present
+rm -f ~/.copilot/config.json ~/.copilot/mcp-config.json 2>/dev/null
+
+# Create symlinks
+ln -s ~/projects/ai-config/copilot/config.json ~/.copilot/config.json
+ln -s ~/projects/ai-config/copilot/mcp-config.json ~/.copilot/mcp-config.json
 ```
 
 ## What's Shared
@@ -95,6 +113,8 @@ These files contain user-specific paths and are gitignored:
 - `codex/config.toml` - Codex configuration with local paths
 - `codex/rules/default.rules` - Permission rules with local paths
 - `claude/settings.json` - Claude settings
+- `copilot/config.json` - Copilot CLI settings (model, trusted folders, allowed URLs)
+- `copilot/mcp-config.json` - MCP server configurations
 
 Copy from the `.example` versions and customize locally.
 

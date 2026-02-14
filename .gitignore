@@ -2,6 +2,8 @@
 codex/config.toml
 codex/rules/default.rules
 claude/settings.json
+copilot/config.json
+copilot/mcp-config.json
 
 # Codex local-only data
 auth.json
@@ -25,9 +27,11 @@ projects/
 session-env/
 todos/
 statsig/
+.ai/
 
 # Codex system skills (auto-generated)
 codex/skills/.system/
+shared/skills/.system/
 
 # Python
 __pycache__/

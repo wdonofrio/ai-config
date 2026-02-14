@@ -18,7 +18,9 @@
       "Bash(wget * | bash*)"
     ]
   },
-  "env": {},
+  "env": {
+    "AI_AGENT_ID": "claude_local"
+  },
   "hooks": {
     "Stop": [
       {

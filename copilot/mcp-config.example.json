@@ -1,0 +1,26 @@
+{
+  "mcpServers": {
+    "supabase": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-supabase"
+      ],
+      "env": {
+        "SUPABASE_URL": "https://<your-project-ref>.supabase.co",
+        "SUPABASE_PROJECT_REF": "<your-project-ref>",
+        "SUPABASE_ANON_KEY": "<your-anon-key>",
+        "SUPABASE_SERVICE_ROLE_KEY": "<your-service-role-key>"
+      },
+      "tools": []
+    },
+    "railway": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@railway/mcp-server"
+      ],
+      "tools": []
+    }
+  }
+}
